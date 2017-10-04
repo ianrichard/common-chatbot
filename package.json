@@ -1,0 +1,25 @@
+{
+  "name": "api-ai-webhook-utils",
+  "version": "0.0.0",
+  "description": "Utility abstraction layer meant to be used on top of API.AI to allow you to write responses in one simple format, and it will subsequently build the code for the respective systems such as plain text API.AI responses, Facebook Messenger and Google Assistant.  It also includes a utility for getting the user profile from Facebook and Google with a graceful fail fallback.",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib -w",
+    "build-once": "babel src -d lib"
+  },
+  "repository": "",
+  "author": "Ian Smith <smith.ianrichard@gmail.com>",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "flags": {
+    "writeLogsToFiles": "true"
+  }
+}

@@ -1,0 +1,6 @@
+npm-debug.log
+/logs
+/node_modules
+/dist
+/.c9
+/.git
