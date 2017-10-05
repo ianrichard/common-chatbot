@@ -1,10 +1,36 @@
-# What is this?
+# Usage
 
-## The Problem
+This is what you would create in your application and return it to the `getResponseObjectForApiAi` method from these utils.  The keys in this object map back to the action from api.ai.  See [the related api.ai webhook starter project](https://github.com/ianrichard/api-ai-webhook-starter) for more detailed usage and how to get the user profile.
+
+```javascript
+getResponseObjectForApiAi({
+    welcome: () => {
+        return [
+            { text: `Hey ${userProfile.firstName} - How’s it going?` },
+            { simpleResponses: ['Good', 'Bad'] }
+        ];
+    },
+    sentiment: () => {
+        let response = [
+            { text: 'Woohoo!' },
+            { image: 'party.gif', accessibilityText: 'People dancing.' }
+        ];
+        if (resolvedQueryContains('bad')) {
+            response = [
+                { text: 'Bummer :( Perhaps a fun GIF will make you feel better!' },
+                { image: 'puppies.gif', accessibilityText: 'Cute puppies playing.' }
+            ];
+        }
+        return response;
+    }
+});
+```
+
+## Impetus
 
 When integrating with API.AI, you can create responses using their GUI.  But these require repeated content for each platform and there can't be anything conditional.
 
-To make dynamic applications, it is much more powerful to utilize webhooks.  The problem is that you then have to format the responses for each of the respective frameworks.  Take the following example for supporting default text / voice, Facebook Messenger and Google Assistant.  A lot, huh?  Not a good idea to keep repeating.
+To make dynamic applications, it is much more powerful to utilize webhooks.  The problem is that you then have to format the responses for each of the respective frameworks.  Take the following example for supporting default text / voice, Facebook Messenger and Google Assistant.  A lot, huh?  Not a good idea to keep repeating. Note - This module only responds with data for the invoking framework, but this is to illustrate the various types of responses that can exist.  Note the various formats specific to the platform.
 
 ```json
 {
@@ -54,17 +80,21 @@ welcome: () => {
 
 # How to Run
 
-See the [API.AI Webhook Starter Project](https://github.com/ianrichard/api-ai-webhook-starter) for info.
+See the [api.ai webhook starter project](https://github.com/ianrichard/api-ai-webhook-starter) for info.
 
 # How to Contribute
 
-- Clone and link this repo to your project
+Want to help?  Fantastic!
+
+- Clone and `npm link` (or however you want to plumb it up) this repo to your project
 - Do updates
 - Pull request
 
 # Roadmap
 
 ### Platforms
+
+Checked platforms are "done" only for the capabilities listed below.
 
 - API.AI Web Demo ✔
 - Facebook Messenger ✔
@@ -73,7 +103,7 @@ See the [API.AI Webhook Starter Project](https://github.com/ianrichard/api-ai-we
 - Cortana
 - Twitter
 
-### Actions / Capabilities
+### Capabilities
 
 These are for the checked platforms above. Fallbacks exist for the following if the behavior is not available.  Example - API.AI web demo doesn't have a user profile or voice appends simple responses because there's nothing to select.
 
