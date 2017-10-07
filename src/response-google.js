@@ -19,12 +19,12 @@ export default function getGoogleResponse(customResponseObject) {
                 });
             });
         } 
-        else if (item.image) {
+        else if (item.imageUrl) {
             googleResponse.rich_response.items = googleResponse.rich_response.items || [];
             googleResponse.rich_response.items.push({
                 basicCard: {
                     image: {
-                        url: item.image,
+                        url: item.imageUrl,
                         accessibilityText: item.accessibilityText
                     }  
                 }                
