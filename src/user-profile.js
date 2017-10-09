@@ -67,6 +67,6 @@ export function setUserProfile(originalIncomingObjectFromApiAi, config) {
 }
 
 export function getUserProfile() {
-    logJsonToFile('user-profile', userProfile);
+    logJsonToFile('user-profile-log', userProfile);
     return userProfile;
 }

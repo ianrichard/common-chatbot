@@ -12,21 +12,21 @@ export default function getResponseObjectForApiAi(customResponseObject, original
         displayText: getBasicTextResponse(customResponseObject)
     };
 
-    logJsonToFile('basic-response', responseObjectForApiAi);
+    logJsonToFile('response-basic-log', responseObjectForApiAi);
 
     if (originalIncomingObjectFromApiAi.originalRequest) {
         responseObjectForApiAi.data = {};
         if (originalIncomingObjectFromApiAi.originalRequest.source === 'facebook') {
             responseObjectForApiAi.data.facebook = getFacebookResponse(customResponseObject);
-            logJsonToFile('facebook-response', responseObjectForApiAi.data.facebook);
+            logJsonToFile('response-facebook-log', responseObjectForApiAi.data.facebook);
         }
         else if (originalIncomingObjectFromApiAi.originalRequest.source === 'google') {
             responseObjectForApiAi.data.google = getGoogleResponse(customResponseObject);
-            logJsonToFile('google-response', responseObjectForApiAi.data.google);
+            logJsonToFile('response-google-log', responseObjectForApiAi.data.google);
         }
     }
     
-    logJsonToFile('combined-response', responseObjectForApiAi);
+    logJsonToFile('response-combined-log', responseObjectForApiAi);
 
     return responseObjectForApiAi;
 }

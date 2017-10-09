@@ -1,33 +1,62 @@
-export default function getGoogleResponse(customResponseObject) {
-    let googleResponse = { 
-        rich_response: {}
+export default function getGoogleResponse(messageConfigArray) {
+    let googleResponse = {
+        richResponse: {
+            items: []
+        }
     };
-    customResponseObject.forEach((item, index) => {
-        if (item.text) {
-            googleResponse.rich_response.items = googleResponse.rich_response.items || [];
-            googleResponse.rich_response.items.push({
+    messageConfigArray.forEach((messageConfig, index) => {
+        if (messageConfig.type == 'text') {
+            googleResponse.richResponse.items = googleResponse.richResponse.items || [];
+            googleResponse.richResponse.items.push({
                 simpleResponse: {
-                    textToSpeech: item.text
+                    textToSpeech: messageConfig.message
                 }
             });
-        } 
-        else if (item.simpleResponses) {
-            googleResponse.rich_response.suggestions = googleResponse.rich_response.suggestions || [];
-            item.simpleResponses.forEach((simpleResponse, innerIndex) => {
-                googleResponse.rich_response.suggestions.push({
+        } else if (messageConfig.type === 'simple-responses') {
+            googleResponse.richResponse.suggestions = googleResponse.richResponse.suggestions || [];
+            messageConfig.values.forEach((simpleResponse, innerIndex) => {
+                googleResponse.richResponse.suggestions.push({
                     title: simpleResponse
                 });
             });
-        } 
-        else if (item.imageUrl) {
-            googleResponse.rich_response.items = googleResponse.rich_response.items || [];
-            googleResponse.rich_response.items.push({
+        } else if (messageConfig.type === 'image') {
+            googleResponse.richResponse.items = googleResponse.richResponse.items || [];
+            googleResponse.richResponse.items.push({
                 basicCard: {
                     image: {
-                        url: item.imageUrl,
-                        accessibilityText: item.accessibilityText
-                    }  
-                }                
+                        url: messageConfig.url,
+                        accessibilityText: messageConfig.accessibilityText
+                    }
+                }
+            });
+        } else if (messageConfig.type === 'list' || messageConfig.type === 'carousel') {
+            googleResponse.systemIntent = {
+                intent: 'actions.intent.OPTION',
+                data: {
+                    '@type': 'type.googleapis.com/google.actions.v2.OptionValueSpec'
+                }
+            };
+
+            // Google uses "listSelect" or "carouselSelect" for the different types
+            googleResponse.systemIntent.data[`${messageConfig.type}Select`] = {
+                items: []
+            };
+
+            messageConfig.options.forEach(listItemConfig => {
+                let optionKey;
+                if (listItemConfig.button) {
+                    optionKey = listItemConfig.button.action;
+                }
+                googleResponse.systemIntent.data[`${messageConfig.type}Select`].items.push({
+                    optionInfo: {
+                        key: optionKey
+                    },
+                    title: listItemConfig.title,
+                    description: listItemConfig.subTitle,
+                    image: {
+                        url: listItemConfig.imageUrl
+                    }
+                });
             });
         }
     });
