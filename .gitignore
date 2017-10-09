@@ -1,6 +1,6 @@
 npm-debug.log
+/lib
 /logs
 /node_modules
-/dist
 /.c9
 /.git

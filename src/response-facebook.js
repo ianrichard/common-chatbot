@@ -23,6 +23,25 @@ export default function getFacebookResponse(messageConfigArray) {
                     }
                 }
             });
+        } else if (messageConfig.type === 'card') {
+
+            let cardContent = {
+                title: messageConfig.title,
+                subtitle: messageConfig.subTitle,
+                image_url: messageConfig.image.url
+            };
+            if (messageConfig.button) {
+                cardContent.buttons = [ getFacebookButtonObject(messageConfig.button) ];
+            }
+            facebookResponse.push({
+                attachment: {
+                    type: 'template',
+                    payload: {
+                        template_type: 'generic',
+                        elements: [cardContent]
+                    }
+                }
+            });
         } else if (messageConfig.type === 'list' || messageConfig.type === 'carousel') {
             let facebookListResponseObject = {
                 attachment: {
@@ -45,7 +64,13 @@ export default function getFacebookResponse(messageConfigArray) {
                     // even though Facebook Messenger list items can load web URLs, this interaction doesn't match Google
                     // so for sake of consistency, this forces the experience to be the same
                     // webviews can be invoked from cards
-                    facebookElementObject.buttons = [getFacebookButtonObject(listItemConfig.button, 'postback')];
+                    facebookElementObject.default_action = {
+                        type: 'web_url',
+                        url: listItemConfig.button.url,
+                        // messenger_extensions: true,
+                        webview_height_ratio: 'tall'
+                        // fallback_url: 'https://peterssendreceiveapp.ngrok.io/'
+                    }
                 }
                 facebookListResponseObject.attachment.payload.elements.push(facebookElementObject);
             });
