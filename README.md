@@ -1,28 +1,34 @@
+# Overview
+
+The goal of this module is to find common patterns between chat platforms and create an abstraction layer on top of them so you only have to write your chat UI code once and have it automagically propagate to the various distributed platforms.
+
+Right now, Facebook Messenger and Google Assistant are supported, but others are planned in the future.
+
+## Status
+
+| Feature            | Facebook Messenger | Google Assistant | Text / Audio Fallback |
+| ------------------ | ------------------ | ---------------- | --------------------- |
+| Plain Text         | ✔                  | ✔                | ✔                     |
+| Quick responses    | ✔                  | ✔                | ✔                     |
+| Image              | ✔                  | ✔                |                       |
+| Card               | ✔                  | ✔                |                       |
+| List               | ✔                  | ✔                |                       |
+| Carousel           | ✔                  | ✔                |                       |
+| Webview / Video    | ✔                  | ✔                |                       |
+
 # Usage
 
-This is what you would create in your application and return it to the `getResponseObjectForApiAi` method from these utils.  The keys in this object map back to the action from api.ai.  See [the related api.ai webhook starter project](https://github.com/ianrichard/api-ai-webhook-starter) for more detailed usage and how to get the user profile.
+This is what you would create in your application and return it to the `getResponseObjectForApiAi` method from these utils.  The keys in this object map back to the action from api.ai.  See the related [common-chatbot-ui-starter-project](https://github.com/ianrichard/common-chatbot-ui-starter-project) for more detailed usage and sample JSON.
 
 ```javascript
 getResponseObjectForApiAi({
     welcome: () => {
         return [
-            { text: `Hey ${userProfile.firstName} - How’s it going?` },
-            { simpleResponses: ['Good', 'Bad'] }
+            { type: 'text', message: 'How can I help?' },
+            { type: 'simple-responses', values: ['Bonus', 'Raise', 'High Five'] }
         ];
     },
-    sentiment: () => {
-        let response = [
-            { text: 'Woohoo!' },
-            { image: 'party.gif', accessibilityText: 'People dancing.' }
-        ];
-        if (resolvedQueryContains('bad')) {
-            response = [
-                { text: 'Bummer :( Perhaps a fun GIF will make you feel better!' },
-                { image: 'puppies.gif', accessibilityText: 'Cute puppies playing.' }
-            ];
-        }
-        return response;
-    }
+    ...
 });
 ```
 
@@ -65,23 +71,6 @@ To make dynamic applications, it is much more powerful to utilize webhooks.  The
 }
 ```
 
-## The Solution
-
-Write simple JSON once and have this utility map it to each of the various system formats.  The following is a sample of what you'd write to acheive the code above.
-
-```js
-welcome: () => {
-    return [
-        { text: `Heyo ${firstName}- so I’ve been staring at your profile pic…` },
-        { simpleResponses: ['And?', 'Uhh… Okay…'] }
-    ];
-}
-```
-
-# How to Run
-
-See the [api.ai webhook starter project](https://github.com/ianrichard/api-ai-webhook-starter) for info.
-
 # How to Contribute
 
 Want to help?  Fantastic!
@@ -89,31 +78,3 @@ Want to help?  Fantastic!
 - Clone and `npm link` (or however you want to plumb it up) this repo to your project
 - Do updates
 - Pull request
-
-# Roadmap
-
-### Platforms
-
-Checked platforms are "done" only for the capabilities listed below.
-
-- API.AI Web Demo ✔
-- Facebook Messenger ✔
-- Google Assistant ✔
-- Alexa
-- Cortana
-- Twitter
-
-### Capabilities
-
-These are for the checked platforms above. Fallbacks exist for the following if the behavior is not available.  Example - API.AI web demo doesn't have a user profile or voice appends simple responses because there's nothing to select.
-
-- User profile ✔
-- Plain text ✔
-- Images ✔
-- Suggestions / simple responses ✔
-- Configurable fallbacks (such as saying or not saying available responses in voice)
-- Card
-- List
-- Carousel
-- Webview
-- Video

@@ -60,25 +60,17 @@ export default function getFacebookResponse(messageConfigArray) {
                     subtitle: listItemConfig.subTitle,
                     image_url: listItemConfig.imageUrl
                 };
-                if (listItemConfig.button) {
-                    // even though Facebook Messenger list items can load web URLs, this interaction doesn't match Google
-                    // so for sake of consistency, this forces the experience to be the same
-                    // webviews can be invoked from cards
-                    facebookElementObject.default_action = {
-                        type: 'web_url',
-                        url: listItemConfig.button.url,
-                        // messenger_extensions: true,
-                        webview_height_ratio: 'tall'
-                        // fallback_url: 'https://peterssendreceiveapp.ngrok.io/'
+
+                facebookElementObject.buttons = [
+                    {
+                        type: 'postback',
+                        payload: listItemConfig.title,
+                        title: listItemConfig.facebookButtonTitle
                     }
-                }
+                ];
+
                 facebookListResponseObject.attachment.payload.elements.push(facebookElementObject);
             });
-
-            // This behavior doesn't exist in Google Assistant, and honestly, it's a bit weird IMO
-            // if (messageConfig.standaloneButton) {
-            //     facebookListResponseObject.attachment.payload.buttons = [ getFacebookButtonObject(messageConfig.standaloneButton) ];
-            // }
 
             facebookResponse.push(facebookListResponseObject);
         }
@@ -86,17 +78,15 @@ export default function getFacebookResponse(messageConfigArray) {
     return facebookResponse;
 }
 
-function getFacebookButtonObject(buttonConfig, type) {
+function getFacebookButtonObject(buttonConfig) {
     let facebookButtonObject = {
         title: buttonConfig.title
     };
-    if (buttonConfig.url || type !== 'postback') {
+    if (buttonConfig.url) {
         facebookButtonObject.type = 'web_url';
         facebookButtonObject.url = buttonConfig.url;
-        if (buttonConfig.facebookWebviewHeight) {
-            facebookButtonObject.webview_height_ratio = buttonConfig.facebookWebviewHeight;
-        }
-    } else {
+        facebookButtonObject.webview_height_ratio = buttonConfig.facebookWebviewHeight || 'tall';
+    } else if (buttonConfig.action) {
         facebookButtonObject.type = 'postback';
         facebookButtonObject.payload = buttonConfig.action;
     }

@@ -33,7 +33,7 @@ export default function getGoogleResponse(messageConfigArray) {
             if (messageConfig.type === 'card') {
                 cardContent.basicCard.title = messageConfig.title;
                 cardContent.basicCard.subtitle = messageConfig.subTitle;
-                cardContent.basicCard.formattedText = messageConfig.body;
+                // cardContent.basicCard.formattedText = messageConfig.body;
                 if (messageConfig.button) {
                     cardContent.basicCard.buttons = [
                         {
@@ -66,7 +66,7 @@ export default function getGoogleResponse(messageConfigArray) {
                 }
                 googleResponse.systemIntent.data[`${messageConfig.type}Select`].items.push({
                     optionInfo: {
-                        key: optionKey
+                        key: listItemConfig.title
                     },
                     title: listItemConfig.title,
                     description: listItemConfig.subTitle,
