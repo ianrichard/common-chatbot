@@ -56,8 +56,7 @@ export default function getFacebookResponse(messageConfigArray) {
 
             messageConfig.options.forEach(listItemConfig => {
                 let facebookElementObject = {
-                    title: listItemConfig.title,
-                    subtitle: listItemConfig.subTitle,
+                    title: listItemConfig.subTitle,
                     image_url: listItemConfig.imageUrl
                 };
 
@@ -65,7 +64,7 @@ export default function getFacebookResponse(messageConfigArray) {
                     {
                         type: 'postback',
                         payload: listItemConfig.title,
-                        title: listItemConfig.facebookButtonTitle
+                        title: listItemConfig.title
                     }
                 ];
 

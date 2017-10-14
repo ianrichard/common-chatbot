@@ -27,7 +27,7 @@ export default function getGoogleResponse(messageConfigArray) {
             if (messageConfig.type === 'image' || messageConfig.image) {
                 cardContent.basicCard.image = {
                     url: messageConfig.url || messageConfig.image.url,
-                    accessibilityText: messageConfig.accessibilityText || messageConfig.image.accessibilityText
+                    accessibilityText: messageConfig.accessibilityText || messageConfig.title
                 }
             }
             if (messageConfig.type === 'card') {
@@ -61,17 +61,15 @@ export default function getGoogleResponse(messageConfigArray) {
 
             messageConfig.options.forEach(listItemConfig => {
                 let optionKey;
-                if (listItemConfig.button) {
-                    optionKey = listItemConfig.button.action;
-                }
                 googleResponse.systemIntent.data[`${messageConfig.type}Select`].items.push({
                     optionInfo: {
-                        key: listItemConfig.title
+                        key: listItemConfig.key
                     },
                     title: listItemConfig.title,
                     description: listItemConfig.subTitle,
                     image: {
-                        url: listItemConfig.imageUrl
+                        url: listItemConfig.imageUrl,
+                        accessibilityText: listItemConfig.title
                     }
                 });
             });

@@ -18,10 +18,10 @@ Right now, Facebook Messenger and Google Assistant are supported, but others are
 
 # Usage
 
-This is what you would create in your application and return it to the `getResponseObjectForApiAi` method from these utils.  The keys in this object map back to the action from api.ai.  See the related [common-chatbot-ui-starter-project](https://github.com/ianrichard/common-chatbot-ui-starter-project) for more detailed usage and sample JSON.
+This is what you would create in your application and return it to the `getResponseObjectForDialogflow` method from these utils.  The keys in this object map back to the action from api.ai.  See the related [common-chatbot-ui-starter-project](https://github.com/ianrichard/common-chatbot-ui-starter-project) for more detailed usage and sample JSON.
 
 ```javascript
-getResponseObjectForApiAi({
+getResponseObjectForDialogflow({
     welcome: () => {
         return [
             { type: 'text', message: 'How can I help?' },

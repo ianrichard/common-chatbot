@@ -8,14 +8,14 @@ let userProfile = {
     profilePic: ''
 };
 
-export function setUserProfile(originalIncomingObjectFromApiAi, config) {
+export function setUserProfile(originalIncomingObjectFromDialogflow, config) {
 
     return new Promise((resolve, reject) => {
 
-        if (originalIncomingObjectFromApiAi.originalRequest && originalIncomingObjectFromApiAi.originalRequest.source === 'facebook') {
+        if (originalIncomingObjectFromDialogflow.originalRequest && originalIncomingObjectFromDialogflow.originalRequest.source === 'facebook') {
 
             const facebookAccessToken = config.facebookAccessToken;
-            const facebookUserId = originalIncomingObjectFromApiAi.originalRequest.data.sender.id;
+            const facebookUserId = originalIncomingObjectFromDialogflow.originalRequest.data.sender.id;
             const url = `https://graph.facebook.com/v2.6/${facebookUserId}?fields=first_name,last_name,profile_pic&access_token=${facebookAccessToken}`;
             https.get(url, (req, res) => {
                 let body = '';
@@ -33,9 +33,9 @@ export function setUserProfile(originalIncomingObjectFromApiAi, config) {
             });
         }
 
-        else if (originalIncomingObjectFromApiAi.originalRequest && originalIncomingObjectFromApiAi.originalRequest.source === 'google') {
-            if (originalIncomingObjectFromApiAi.originalRequest.data.user && originalIncomingObjectFromApiAi.originalRequest.data.user.accessToken) {
-                const googleAccessToken = originalIncomingObjectFromApiAi.originalRequest.data.user.accessToken;
+        else if (originalIncomingObjectFromDialogflow.originalRequest && originalIncomingObjectFromDialogflow.originalRequest.source === 'google') {
+            if (originalIncomingObjectFromDialogflow.originalRequest.data.user && originalIncomingObjectFromDialogflow.originalRequest.data.user.accessToken) {
+                const googleAccessToken = originalIncomingObjectFromDialogflow.originalRequest.data.user.accessToken;
                 const url = `https://www.googleapis.com/plus/v1/people/me?access_token=${googleAccessToken}`;
                 https.get(url, (req, res) => {
                     let body = '';
