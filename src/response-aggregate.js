@@ -6,7 +6,7 @@ import getGoogleResponse from './response-google';
 
 export default function getResponseObjectForDialogflow(customResponseObject, originalIncomingObjectFromDialogflow) {
     
-    // basic response types for api.ai web demo and text
+    // basic response types for Dialogflow web demo and text
     let responseObjectForDialogflow = {
         speech: getBasicTextResponse(customResponseObject),
         displayText: getBasicTextResponse(customResponseObject)

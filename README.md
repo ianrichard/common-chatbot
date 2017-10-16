@@ -22,7 +22,7 @@ Right now, Facebook Messenger and Google Assistant are supported, but others are
 
 # Usage
 
-This is what you would create in your application and return it to the `getResponseObjectForDialogflow` method from these utils.  The keys in this object map back to the action from api.ai.  See the related [common-chatbot-ui-starter-project](https://github.com/ianrichard/common-chatbot-ui-starter-project) for more detailed usage and [sample JSON](https://github.com/ianrichard/common-chatbot-ui-starter-project/blob/master/src/responses/index.js).
+This is what you would create in your application and return it to the `getResponseObjectForDialogflow` method from these utils.  The keys in this object map back to the action from Dialogflow.  See the related [common-chatbot-ui-starter-project](https://github.com/ianrichard/common-chatbot-ui-starter-project) for more detailed usage and [sample JSON](https://github.com/ianrichard/common-chatbot-ui-starter-project/blob/master/src/responses/index.js).
 
 ```javascript
 getResponseObjectForDialogflow({
@@ -38,7 +38,7 @@ getResponseObjectForDialogflow({
 
 ## Impetus
 
-When integrating with API.AI, you can create responses using their GUI.  But these require repeated content for each platform and there can't be anything conditional.
+When integrating with Dialogflow, you can create responses using their GUI.  But these require repeated content for each platform and there can't be anything conditional.
 
 To make dynamic applications, it is much more powerful to utilize webhooks.  The problem is that you then have to format the responses for each of the respective frameworks.  Take the following example for supporting default text / voice, Facebook Messenger and Google Assistant.  A lot, huh?  Not a good idea to keep repeating. Note - This module only responds with data for the invoking framework, but this is to illustrate the various types of responses that can exist.  Note the various formats specific to the platform.
 
