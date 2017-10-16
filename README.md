@@ -16,9 +16,13 @@ Right now, Facebook Messenger and Google Assistant are supported, but others are
 | Carousel           | ✔                  | ✔                |                       |
 | Webview / Video    | ✔                  | ✔                |                       |
 
+# Components
+
+![Sample components](media/common-chatbot-ui-components.jpg)
+
 # Usage
 
-This is what you would create in your application and return it to the `getResponseObjectForDialogflow` method from these utils.  The keys in this object map back to the action from api.ai.  See the related [common-chatbot-ui-starter-project](https://github.com/ianrichard/common-chatbot-ui-starter-project) for more detailed usage and sample JSON.
+This is what you would create in your application and return it to the `getResponseObjectForDialogflow` method from these utils.  The keys in this object map back to the action from api.ai.  See the related [common-chatbot-ui-starter-project](https://github.com/ianrichard/common-chatbot-ui-starter-project) for more detailed usage and [sample JSON](https://github.com/ianrichard/common-chatbot-ui-starter-project/blob/master/src/responses/index.js).
 
 ```javascript
 getResponseObjectForDialogflow({
