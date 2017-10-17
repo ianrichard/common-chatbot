@@ -4,6 +4,8 @@ The goal of this module is to find common patterns between chat platforms and cr
 
 Right now, Facebook Messenger and Google Assistant are supported, but others are planned in the future.
 
+This is meant to be used in conjunction with with the [common-chatbot-ui-starter-project](https://github.com/ianrichard/common-chatbot-ui-starter-project), which integrates with [Dialogflow](https://dialogflow.com/).
+
 ## Status
 
 | Feature            | Facebook Messenger | Google Assistant | Text / Audio Fallback |
@@ -38,9 +40,13 @@ getResponseObjectForDialogflow({
 
 ## Impetus
 
-When integrating with Dialogflow, you can create responses using their GUI.  But these require repeated content for each platform and there can't be anything conditional.
+Outside of some simple "Hello, world" or non-conditional flows, you'll need to use webhooks with a conversational intent handling platform such as Dialogflow.  
 
-To make dynamic applications, it is much more powerful to utilize webhooks.  The problem is that you then have to format the responses for each of the respective frameworks.  Take the following example for supporting default text / voice, Facebook Messenger and Google Assistant.  A lot, huh?  Not a good idea to keep repeating. Note - This module only responds with data for the invoking framework, but this is to illustrate the various types of responses that can exist.  Note the various formats specific to the platform.
+The problem is that you then have to format the response JSON for each of the respective distributed platforms (i.e. Facebook Messenger / Google Assistant).  Even in the Dialogflow Firebase editor view, you can see how they utilize Google's abstraction library for Assistant which magically creates JSON you don't see, then have manual formatting for other platforms.  So the usage is inconsistent.  It could be tweaked on there to do something like the goal of this project and I get why they left the boilerplate simple.  So not really a knock on Dialogflow, this is just an extension.
+
+When integrating with Dialogflow, you can create responses using their GUI.  But these require repeated content for each platform and there can't be anything conditional unless you use their online Firebase editor, which can be more difficult for development than a fully-blown scalable local workspace with realtime service updates during development.  Admittedly, I haven't used their online Firebase integration (it wasn't available when I started making this), so take my comments with a grain of salt.
+
+Take the following example for supporting default text / voice, Facebook Messenger and Google Assistant.  A lot, huh?  Not a good idea to keep repeating. Note - This module responds with data for the invoking framework on demand (i.e. won't send Google data when the request is from Facebook), but this is to illustrate the various types of responses that can exist.  Note the various formats specific to the platform.
 
 ```json
 {
@@ -74,11 +80,21 @@ To make dynamic applications, it is much more powerful to utilize webhooks.  The
     }
 }
 ```
+This simple example may not seem like a big deal, but when you get into cards, lists, carousels, etc., it can become pretty hard to manage.
+
+# Roadmap
+
+If anyone wants to contribute, by all means :)
+
+- User profile retrieval utilities (started, but not finished or documented)
+- Unit tests
+- Exception handling
+- Warning logs
+- Docs on optional stuff
+- Separate platform-specific components.  "common" at that point would mean that the way of easily consuming components is common
 
 # How to Contribute
 
 Want to help?  Fantastic!
 
-- Clone and `npm link` (or however you want to plumb it up) this repo to your project
-- Do updates
-- Pull request
+- See instructions on the [common-chatbot-ui-starter-project](https://github.com/ianrichard/common-chatbot-ui-starter-project)
