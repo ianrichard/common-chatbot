@@ -12,11 +12,11 @@ This is meant to be used in conjunction with with the [common-chatbot-ui-starter
 | ------------------ | ------------------ | ---------------- | --------------------- |
 | Plain Text         | ✔                  | ✔                | ✔                     |
 | Quick responses    | ✔                  | ✔                | ✔                     |
-| Image              | ✔                  | ✔                |                       |
-| Card               | ✔                  | ✔                |                       |
-| List               | ✔                  | ✔                |                       |
-| Carousel           | ✔                  | ✔                |                       |
-| Webview / Video    | ✔                  | ✔                |                       |
+| Image              | ✔                  | ✔                | ✔                     |
+| Card               | ✔                  | ✔                | ✔                     |
+| List               | ✔                  | ✔                | ✔                     |
+| Carousel           | ✔                  | ✔                | ✔                     |
+| Webview / Video    | ✔                  | ✔                | Gets ignored          |
 
 # Components
 
