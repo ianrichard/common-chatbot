@@ -85,6 +85,7 @@ function getFacebookButtonObject(buttonConfig) {
         facebookButtonObject.type = 'web_url';
         facebookButtonObject.url = buttonConfig.url;
         facebookButtonObject.webview_height_ratio = buttonConfig.facebookWebviewHeight || 'tall';
+        facebookButtonObject.messenger_extensions = true;
     } else if (buttonConfig.action) {
         facebookButtonObject.type = 'postback';
         facebookButtonObject.payload = buttonConfig.action;

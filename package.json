@@ -19,7 +19,7 @@
       "es2015"
     ]
   },
-  "flags": {
+  "moduleSettings": {
     "writeLogsToFiles": "true"
   },
   "license": "MIT"
