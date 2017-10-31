@@ -1,6 +1,6 @@
 {
   "name": "common-chatbot-ui",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Utility abstraction layer meant to be used on top of Dialogflow (formerly API.AI) to allow you to write responses in one simple format, and it will subsequently build the code for the respective systems such as plain text API.AI responses, Facebook Messenger and Google Assistant.  It also includes a utility for getting the user profile from Facebook and Google with a graceful fail fallback.",
   "main": "lib/index.js",
   "scripts": {
