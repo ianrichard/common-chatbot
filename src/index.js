@@ -1,4 +1,12 @@
-import getResponseObjectForDialogflow from './response-aggregate';
-import {getUserProfile, setUserProfile} from './user-profile';
+import getDialogflowResponseObject from './response-dialogflow';
+import getGoogleResponseObject from './response-google';
+import getFacebookResponseArray from './response-facebook';
+import {getUserProfileObject, setUserProfileObject} from './user-profile';
 
-export {getResponseObjectForDialogflow, getUserProfile, setUserProfile};
+export {
+    getDialogflowResponseObject,
+    getGoogleResponseObject,
+    getFacebookResponseArray,
+    getUserProfileObject,
+    setUserProfileObject
+};

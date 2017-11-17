@@ -1,53 +1,55 @@
-export default function getGoogleResponse(messageConfigArray) {
-    let googleResponse = {
+import logJsonToFile from './utils/log-json-to-file';
+
+export default function getGoogleResponseObject(commonChatbotResponseArray) {
+    let googleResponseObject = {
         richResponse: {
             items: []
         }
     };
-    messageConfigArray.forEach((messageConfig, index) => {
-        if (messageConfig.type == 'text') {
-            googleResponse.richResponse.items = googleResponse.richResponse.items || [];
-            googleResponse.richResponse.items.push({
+    commonChatbotResponseArray.forEach((commonChatbotResponseItemObject, index) => {
+        if (commonChatbotResponseItemObject.type == 'text') {
+            googleResponseObject.richResponse.items = googleResponseObject.richResponse.items || [];
+            googleResponseObject.richResponse.items.push({
                 simpleResponse: {
-                    textToSpeech: messageConfig.message
+                    textToSpeech: commonChatbotResponseItemObject.message
                 }
             });
-        } else if (messageConfig.type === 'simple-responses') {
-            googleResponse.richResponse.suggestions = googleResponse.richResponse.suggestions || [];
-            messageConfig.values.forEach((simpleResponse, innerIndex) => {
-                googleResponse.richResponse.suggestions.push({
+        } else if (commonChatbotResponseItemObject.type === 'simple-responses') {
+            googleResponseObject.richResponse.suggestions = googleResponseObject.richResponse.suggestions || [];
+            commonChatbotResponseItemObject.values.forEach((simpleResponse, innerIndex) => {
+                googleResponseObject.richResponse.suggestions.push({
                     title: simpleResponse
                 });
             });
-        } else if (messageConfig.type === 'image' || messageConfig.type === 'card') {
-            googleResponse.richResponse.items = googleResponse.richResponse.items || [];
-            let cardContent = {
+        } else if (commonChatbotResponseItemObject.type === 'image' || commonChatbotResponseItemObject.type === 'card') {
+            googleResponseObject.richResponse.items = googleResponseObject.richResponse.items || [];
+            let cardContentObject = {
                 basicCard: {}
             };
-            if (messageConfig.type === 'image' || messageConfig.image) {
-                cardContent.basicCard.image = {
-                    url: messageConfig.url || messageConfig.image.url,
-                    accessibilityText: messageConfig.accessibilityText || messageConfig.title
+            if (commonChatbotResponseItemObject.type === 'image' || commonChatbotResponseItemObject.image) {
+                cardContentObject.basicCard.image = {
+                    url: commonChatbotResponseItemObject.url || commonChatbotResponseItemObject.image.url,
+                    accessibilityText: commonChatbotResponseItemObject.accessibilityText || commonChatbotResponseItemObject.title
                 }
             }
-            if (messageConfig.type === 'card') {
-                cardContent.basicCard.title = messageConfig.title;
-                cardContent.basicCard.subtitle = messageConfig.subTitle;
-                // cardContent.basicCard.formattedText = messageConfig.body;
-                if (messageConfig.button) {
-                    cardContent.basicCard.buttons = [
+            if (commonChatbotResponseItemObject.type === 'card') {
+                cardContentObject.basicCard.title = commonChatbotResponseItemObject.title;
+                cardContentObject.basicCard.subtitle = commonChatbotResponseItemObject.subTitle;
+                // cardContentObject.basicCard.formattedText = commonChatbotResponseItemObject.body;
+                if (commonChatbotResponseItemObject.button) {
+                    cardContentObject.basicCard.buttons = [
                         {
-                            title: messageConfig.button.title,
+                            title: commonChatbotResponseItemObject.button.title,
                             openUrlAction: {
-                                url: messageConfig.button.url
+                                url: commonChatbotResponseItemObject.button.url
                             }
                         }
                     ];
                 }
             }
-            googleResponse.richResponse.items.push(cardContent);
-        } else if (messageConfig.type === 'list' || messageConfig.type === 'carousel') {
-            googleResponse.systemIntent = {
+            googleResponseObject.richResponse.items.push(cardContentObject);
+        } else if (commonChatbotResponseItemObject.type === 'list' || commonChatbotResponseItemObject.type === 'carousel') {
+            googleResponseObject.systemIntent = {
                 intent: 'actions.intent.OPTION',
                 data: {
                     '@type': 'type.googleapis.com/google.actions.v2.OptionValueSpec'
@@ -55,13 +57,13 @@ export default function getGoogleResponse(messageConfigArray) {
             };
 
             // Google uses "listSelect" or "carouselSelect" for the different types
-            googleResponse.systemIntent.data[`${messageConfig.type}Select`] = {
+            googleResponseObject.systemIntent.data[`${commonChatbotResponseItemObject.type}Select`] = {
                 items: []
             };
 
-            messageConfig.options.forEach(listItemConfig => {
+            commonChatbotResponseItemObject.options.forEach(listItemConfig => {
                 let optionKey;
-                googleResponse.systemIntent.data[`${messageConfig.type}Select`].items.push({
+                googleResponseObject.systemIntent.data[`${commonChatbotResponseItemObject.type}Select`].items.push({
                     optionInfo: {
                         key: listItemConfig.key
                     },
@@ -75,5 +77,6 @@ export default function getGoogleResponse(messageConfigArray) {
             });
         }
     });
-    return googleResponse;
+    logJsonToFile('google-response-object-log', googleResponseObject);
+    return googleResponseObject;
 }

@@ -1,66 +1,68 @@
-export default function getFacebookResponse(messageConfigArray) {
-    let facebookResponse = [];
-    messageConfigArray.forEach((messageConfig, index) => {
-        if (messageConfig.type === 'text') {
-            facebookResponse.push({
-                text: messageConfig.message
+import logJsonToFile from "./utils/log-json-to-file";
+
+export default function getFacebookResponseArray(commonChatbotResponseArray) {
+    let facebookResponseArray = [];
+    commonChatbotResponseArray.forEach((commonChatbotResponseItemObject, index) => {
+        if (commonChatbotResponseItemObject.type === 'text') {
+            facebookResponseArray.push({
+                text: commonChatbotResponseItemObject.message
             });
-        } else if (messageConfig.type === 'simple-responses') {
-            facebookResponse[index - 1].quick_replies = [];
-            messageConfig.values.forEach((simpleResponse, innerIndex) => {
-                facebookResponse[index - 1].quick_replies.push({
+        } else if (commonChatbotResponseItemObject.type === 'simple-responses') {
+            facebookResponseArray[index - 1].quick_replies = [];
+            commonChatbotResponseItemObject.values.forEach((simpleResponse, innerIndex) => {
+                facebookResponseArray[index - 1].quick_replies.push({
                     content_type: 'text',
                     title: simpleResponse,
                     payload: simpleResponse
                 });
             });
-        } else if (messageConfig.type === 'image') {
-            facebookResponse.push({
+        } else if (commonChatbotResponseItemObject.type === 'image') {
+            facebookResponseArray.push({
                 attachment: {
                     type: 'image',
                     payload: {
-                        url: messageConfig.url
+                        url: commonChatbotResponseItemObject.url
                     }
                 }
             });
-        } else if (messageConfig.type === 'card') {
+        } else if (commonChatbotResponseItemObject.type === 'card') {
 
-            let cardContent = {
-                title: messageConfig.title,
-                subtitle: messageConfig.subTitle,
-                image_url: messageConfig.image.url
+            let cardContentObject = {
+                title: commonChatbotResponseItemObject.title,
+                subtitle: commonChatbotResponseItemObject.subTitle,
+                image_url: commonChatbotResponseItemObject.image.url
             };
-            if (messageConfig.button) {
-                cardContent.buttons = [ getFacebookButtonObject(messageConfig.button) ];
+            if (commonChatbotResponseItemObject.button) {
+                cardContentObject.buttons = [ getFacebookButtonObject(commonChatbotResponseItemObject.button) ];
             }
-            facebookResponse.push({
+            facebookResponseArray.push({
                 attachment: {
                     type: 'template',
                     payload: {
                         template_type: 'generic',
-                        elements: [cardContent]
+                        elements: [cardContentObject]
                     }
                 }
             });
-        } else if (messageConfig.type === 'list' || messageConfig.type === 'carousel') {
-            let facebookListResponseObject = {
+        } else if (commonChatbotResponseItemObject.type === 'list' || commonChatbotResponseItemObject.type === 'carousel') {
+            let listObject = {
                 attachment: {
                     type: 'template',
                     payload: {
-                        template_type: messageConfig.type === 'list' ? 'list' : 'generic',
-                        top_element_style: messageConfig.type === 'list' ? messageConfig.facebookTopElementStyle || 'compact' : undefined,
+                        template_type: commonChatbotResponseItemObject.type === 'list' ? 'list' : 'generic',
+                        top_element_style: commonChatbotResponseItemObject.type === 'list' ? commonChatbotResponseItemObject.facebookTopElementStyle || 'compact' : undefined,
                         elements: []
                     }
                 }
             };
 
-            messageConfig.options.forEach(listItemConfig => {
-                let facebookElementObject = {
+            commonChatbotResponseItemObject.options.forEach(listItemConfig => {
+                let elementObject = {
                     title: listItemConfig.subTitle,
                     image_url: listItemConfig.imageUrl
                 };
 
-                facebookElementObject.buttons = [
+                elementObject.buttons = [
                     {
                         type: 'postback',
                         payload: listItemConfig.title,
@@ -68,27 +70,28 @@ export default function getFacebookResponse(messageConfigArray) {
                     }
                 ];
 
-                facebookListResponseObject.attachment.payload.elements.push(facebookElementObject);
+                listObject.attachment.payload.elements.push(elementObject);
             });
 
-            facebookResponse.push(facebookListResponseObject);
+            facebookResponseArray.push(listObject);
         }
     });
-    return facebookResponse;
+    logJsonToFile('facebook-response-array-log', facebookResponseArray);
+    return facebookResponseArray;
 }
 
-function getFacebookButtonObject(buttonConfig) {
-    let facebookButtonObject = {
-        title: buttonConfig.title
+function getFacebookButtonObject(buttonConfigObject) {
+    let buttonObject = {
+        title: buttonConfigObject.title
     };
-    if (buttonConfig.url) {
-        facebookButtonObject.type = 'web_url';
-        facebookButtonObject.url = buttonConfig.url;
-        facebookButtonObject.webview_height_ratio = buttonConfig.facebookWebviewHeight || 'tall';
-        facebookButtonObject.messenger_extensions = true;
-    } else if (buttonConfig.action) {
-        facebookButtonObject.type = 'postback';
-        facebookButtonObject.payload = buttonConfig.action;
+    if (buttonConfigObject.url) {
+        buttonObject.type = 'web_url';
+        buttonObject.url = buttonConfigObject.url;
+        buttonObject.webview_height_ratio = buttonConfigObject.facebookWebviewHeight || 'tall';
+        buttonObject.messenger_extensions = true;
+    } else if (buttonConfigObject.action) {
+        buttonObject.type = 'postback';
+        buttonObject.payload = buttonConfigObject.action;
     }
-    return facebookButtonObject;
+    return buttonObject;
 }
